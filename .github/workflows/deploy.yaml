@@ -18,11 +18,6 @@ jobs:
       - name: Save Docker image as tar file
         run: docker save -o my-image.tar my-image:latest
 
-      - name: debug - ls
-        run: |
-          ls
-          ENDSSH
-
       - name: Transfer Docker image to remote server
         run: |
           mkdir -p ~/.ssh
@@ -38,10 +33,10 @@ jobs:
 
       - name: Transfer Docker Compose file to remote server
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
+          scp -o StrictHostKeyChecking=no docker-compose.yaml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
 
       - name: Deploy Docker containers using Docker Compose on remote server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
-          docker-compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yml up -d
+          docker-compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yaml up -d
           ENDSSH
