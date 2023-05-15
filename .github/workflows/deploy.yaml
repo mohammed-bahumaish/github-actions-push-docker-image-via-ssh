@@ -20,8 +20,8 @@ jobs:
 
       - name: debug - ls
         run: |
-        ls
-        ENDSSH
+          ls
+          ENDSSH
 
       - name: Transfer Docker image to remote server
         run: |
