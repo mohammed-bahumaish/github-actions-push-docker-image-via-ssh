@@ -4,39 +4,39 @@ on:
     branches: [main]
     paths:
       - './**'
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        - name: Build Docker image
-          run: docker build -t my-image:latest .
+      - name: Build Docker image
+        run: docker build -t my-image:latest .
 
-        - name: Save Docker image as tar file
-          run: docker save -o my-image.tar my-image:latest
+      - name: Save Docker image as tar file
+        run: docker save -o my-image.tar my-image:latest
 
-        - name: Transfer Docker image to remote server
-          run: |
-            mkdir -p ~/.ssh
-            echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            scp -o StrictHostKeyChecking=no my-image.tar ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
+      - name: Transfer Docker image to remote server
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -o StrictHostKeyChecking=no my-image.tar ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
 
-        - name: Load Docker image on remote server
-          run: |
-            ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
-            docker load -i ${{ secrets.REMOTE_SERVER_PATH }}/my-image.tar
-            ENDSSH
+      - name: Load Docker image on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
+          docker load -i ${{ secrets.REMOTE_SERVER_PATH }}/my-image.tar
+          ENDSSH
 
-        - name: Transfer Docker Compose file to remote server
-          run: |
-            scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
+      - name: Transfer Docker Compose file to remote server
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
 
-        - name: Deploy Docker containers using Docker Compose on remote server
-          run: |
-            ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
-            docker-compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yml up -d
-            ENDSSH
+      - name: Deploy Docker containers using Docker Compose on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
+          docker-compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yml up -d
+          ENDSSH
