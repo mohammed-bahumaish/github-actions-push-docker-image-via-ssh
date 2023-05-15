@@ -18,6 +18,11 @@ jobs:
       - name: Save Docker image as tar file
         run: docker save -o my-image.tar my-image:latest
 
+      - name: debug - ls
+        run: |
+        ls
+        ENDSSH
+
       - name: Transfer Docker image to remote server
         run: |
           mkdir -p ~/.ssh
