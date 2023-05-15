@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '*'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -38,5 +39,5 @@ jobs:
       - name: Deploy Docker containers using Docker Compose on remote server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
-          docker-compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yaml up -d
+          docker compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yaml up -d
           ENDSSH

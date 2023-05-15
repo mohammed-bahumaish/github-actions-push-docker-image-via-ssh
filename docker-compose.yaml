@@ -1,8 +1,8 @@
 version: '3.9'
 services:
   app:
-    container_name: bitovi-streaming-examples
-    build: .
+    container_name: deploy
+    image: my-image:latest
     restart: always
 
     # Specify a .env file for credentials
