@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - './**'
+      - '*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
