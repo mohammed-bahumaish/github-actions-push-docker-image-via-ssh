@@ -20,7 +20,7 @@ Follow these steps to deploy your Docker image to a remote server using the prov
       + REMOTE_SERVER_ADDRESS: The IP address or hostname of the remote server.
       + REMOTE_SERVER_PATH: The path on the remote server where you want the Docker Compose file to be stored.
       + Replace the values with the appropriate credentials and server details.
-5.Trigger the workflow: Push your changes to the main branch of your repository. The GitHub Action workflow named main will be triggered automatically.
+5. Trigger the workflow: Push your changes to the main branch of your repository. The GitHub Action workflow named main will be triggered automatically.
 6. Monitor the workflow: Go to the "Actions" tab in your GitHub repository to monitor the progress of the workflow. You can view the build logs and check if any errors occur during the deployment process.
 7. Verify the deployment: Once the workflow completes successfully, the Docker image will be built, transferred, and loaded on the remote server. The Docker Compose file will also be transferred to the specified path on the server. The Docker containers will be deployed and running on the remote server based on the configurations specified in the Docker Compose file.
 
